@@ -112,13 +112,10 @@ class User:
             return json_data['status']
 
     def uploadMany(self, filePaths: list, adminCode=None, description=None, password=None, tags=None, expire=None):
-        informations = list()
         for p in filePaths:
             info = self.uploadFile(p, adminCode=adminCode, description=description, password=password, tags=tags, expire=expire)
             if adminCode is None:
                 adminCode = info.adminCode
-            informations.append(info)
-        return informations
 
 
     def deleteUpload(self, adminCode: str):
