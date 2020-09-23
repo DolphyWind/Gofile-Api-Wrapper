@@ -13,6 +13,7 @@ class DBManager:
         sql = """
         CREATE TABLE IF NOT EXISTS Users(
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            name VARCHAR(30) NOT NULL,
             token VARCHAR(128) NOT NULL,
             email VARCHAR(30),
             filesCount INTEGER,
@@ -24,10 +25,10 @@ class DBManager:
     @staticmethod
     def addUser(user: User):
         sql = """
-        INSERT INTO Users (token, email, filesCount, filesSize) VALUES (?, ?, ?, ?)
+        INSERT INTO Users (name, token, email, filesCount, filesSize) VALUES (?, ?, ?, ?, ?)
         """
 
-        values = (user.token, user.email, user.filesCount, user.filesSize,)
+        values = (user.name, user.token, user.email, user.filesCount, user.filesSize,)
 
         try:
             cursor.execute(sql, values)
@@ -40,10 +41,10 @@ class DBManager:
     @staticmethod
     def addUsers(users: list):
         sql = """
-        INSERT INTO Users (token, email, filesCount, filesSize) VALUES (?, ?, ?, ?)
+        INSERT INTO Users (name, token, email, filesCount, filesSize) VALUES (? ?, ?, ?, ?)
         """
 
-        values = [(user.token, user.email, user.filesCount, user.filesSize,) for user in users]
+        values = [(user.name, user.token, user.email, user.filesCount, user.filesSize,) for user in users]
 
         try:
             cursor.executemany(sql, values)
