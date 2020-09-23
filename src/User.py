@@ -103,13 +103,22 @@ class User:
         json_data = r.json()
         if json_data['status'] == 'ok':
             json_data = json_data['data']
-            print(json_data)
+
             uploadInfo = UploadInfo({})
             uploadInfo.code = getKey(json_data, 'code')
             uploadInfo.adminCode = getKey(json_data, 'adminCode')
             return uploadInfo
         else:
             return json_data['status']
+
+    def uploadMany(self, filePaths: list, adminCode=None, description=None, password=None, tags=None, expire=None):
+        informations = list()
+        for p in filePaths:
+            info = self.uploadFile(p, adminCode=adminCode, description=description, password=password, tags=tags, expire=expire)
+            if adminCode is None:
+                adminCode = info.adminCode
+            informations.append(info)
+        return informations
 
 
     def deleteUpload(self, adminCode: str):
