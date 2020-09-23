@@ -1,4 +1,4 @@
-from File import File
+from FileInfo import FileInfo
 
 def getKey(d: dict, key: str):
     try:
@@ -13,7 +13,7 @@ class UploadInfo:
         self.code = str()
         self.filesList = list()
         for i, data in files.items():
-            f = File()
+            f = FileInfo()
             f.name = getKey(data, 'name')
             f.mimetype = getKey(data, 'mimetype')
             f.size = getKey(data, 'size')

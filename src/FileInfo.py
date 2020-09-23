@@ -1,5 +1,5 @@
 
-class File:
+class FileInfo:
     def __init__(self):
         self.name = str()
         self.mimetype = str()

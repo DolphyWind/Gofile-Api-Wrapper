@@ -100,6 +100,16 @@ class User:
         files = {'file': open(filePath, 'rb')}
 
         r = requests.post(url, files=files, data=data)
+        json_data = r.json()
+        if json_data['status'] == 'ok':
+            json_data = json_data['data']
+            print(json_data)
+            uploadInfo = UploadInfo({})
+            uploadInfo.code = getKey(json_data, 'code')
+            uploadInfo.adminCode = getKey(json_data, 'adminCode')
+            return uploadInfo
+        else:
+            return json_data['status']
 
 
     def deleteUpload(self, adminCode: str):
