@@ -73,10 +73,17 @@ class User:
 
     @staticmethod
     def getBestServer(self):
-        pass
+        req = requests.get('https://apiv2.gofile.io/getServer')
+        data = json.loads(req.text)
+        if data['status'] != 'ok':
+            raise Exception('An error occured!')
+
+        return data['data']['server']
 
     def uploadFile(self, path):
         pass
 
-    def deleteUpload(self):
-        pass
+    def deleteUpload(self, adminCode: str):
+        req = requests.get('https://apiv2.gofile.io/deleteUpload?ac=' + adminCode)
+        data = json.loads(req.text)
+        return data['status'] == 'ok'
