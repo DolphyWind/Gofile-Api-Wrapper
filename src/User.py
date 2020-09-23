@@ -1,4 +1,3 @@
-import json
 import requests
 from db_manager import DBManager, UserExistException, UserNotExistException
 from UploadData import UploadData, getKey
@@ -31,7 +30,7 @@ class User:
     # Get information
     def getUserInfo(self):
         req = requests.get(f'https://apiv2.gofile.io/getAccountInfo?token={self.token}')
-        data = json.loads(req.text)
+        data = req.json()
         if data['status'] != 'ok':
             raise Exception('An error occured!')
 
@@ -51,7 +50,7 @@ class User:
 
     def getUploadsList(self):
         req = requests.get('https://apiv2.gofile.io/getUploadsList?token={}'.format(self.token))
-        data = json.loads(req.text)
+        data = req.json()
         if data['status'] != 'ok':
             raise Exception('An error occured!')
 
@@ -72,18 +71,38 @@ class User:
         return uploadDatas
 
     @staticmethod
-    def getBestServer(self):
+    def getBestServer():
         req = requests.get('https://apiv2.gofile.io/getServer')
-        data = json.loads(req.text)
+        data = req.json()
         if data['status'] != 'ok':
             raise Exception('An error occured!')
 
         return data['data']['server']
 
-    def uploadFile(self, path):
-        pass
+    def uploadFile(self, filePath: str, adminCode=None, description=None, password=None, tags=None, expire=None):
+        server = User.getBestServer()
+        url = f'https://{server}.gofile.io/uploadFile'
+
+        data = {'email': self.email}
+        if adminCode:
+            data['ac'] = adminCode
+        if description:
+            data['description'] = description
+        if password:
+            data['password'] = password
+        if tags:
+            if len(tags) > 1:
+                tags = ','.join(tags)
+            data['tags'] = tags
+        if expire:
+            data['expire'] = expire
+
+        files = {'file': open(filePath, 'rb')}
+
+        r = requests.post(url, files=files, data=data)
+
 
     def deleteUpload(self, adminCode: str):
         req = requests.get('https://apiv2.gofile.io/deleteUpload?ac=' + adminCode)
-        data = json.loads(req.text)
+        data = req.json()
         return data['status'] == 'ok'
