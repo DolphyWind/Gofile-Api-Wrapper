@@ -1,6 +1,6 @@
 import requests
 from db_manager import DBManager, UserExistException, UserNotExistException
-from UploadData import UploadData, getKey
+from UploadInfo import UploadInfo, getKey
 
 class User:
     # Initialization. name is not a part of api
@@ -55,20 +55,20 @@ class User:
             raise Exception('An error occured!')
 
         data = data['data']
-        uploadDatas = list()
+        uploadInfoList = list()
         for i, d in data.items():
-            uploadData = UploadData(getKey(d, 'files'))
-            uploadData.code = getKey(d, 'code')
-            uploadData.server = getKey(d, 'server')
-            uploadData.views = getKey(d, 'views')
-            uploadData.number = getKey(d, 'number')
-            uploadData.totalSize = getKey(d, 'totalSize')
-            uploadData.uploadTime = getKey(d, 'uploadTime')
-            uploadData.removalCode = getKey(d, 'removalCode')
-            uploadData.adminCode = getKey(d, 'adminCode')
-            uploadData.removalDate = getKey(d, 'removalDate')
-            uploadDatas.append(uploadData)
-        return uploadDatas
+            uploadInfo = UploadInfo(getKey(d, 'files'))
+            uploadInfo.code = getKey(d, 'code')
+            uploadInfo.server = getKey(d, 'server')
+            uploadInfo.views = getKey(d, 'views')
+            uploadInfo.number = getKey(d, 'number')
+            uploadInfo.totalSize = getKey(d, 'totalSize')
+            uploadInfo.uploadTime = getKey(d, 'uploadTime')
+            uploadInfo.removalCode = getKey(d, 'removalCode')
+            uploadInfo.adminCode = getKey(d, 'adminCode')
+            uploadInfo.removalDate = getKey(d, 'removalDate')
+            uploadInfoList.append(uploadInfo)
+        return uploadInfoList
 
     @staticmethod
     def getBestServer():

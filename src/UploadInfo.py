@@ -8,7 +8,7 @@ def getKey(d: dict, key: str):
     else:
         return val
 
-class UploadData:
+class UploadInfo:
     def __init__(self, files: dict):
         self.code = str()
         self.filesList = list()
